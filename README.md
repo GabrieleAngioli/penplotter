@@ -5,5 +5,5 @@ Mettere qua tutti i codici riguardanti il progetto
 
 Main.ino -> codice gruppo MOTORE, watch wiki for more
 
-comunicazionePenPlotter.py -> gruppo PYTHON, watch wiki for more
+comunicazionePenPlotter.py -> gruppo PYTHON, watch wiki for more //ma quale wiki va guardata, non esiste
 morgante15.ino -> gruppo seriale morgante 
