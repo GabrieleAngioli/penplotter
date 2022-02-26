@@ -6,24 +6,35 @@ class Coordinata:
     def __init__(self, x, y):
         self.x=int(x)
         self.y=int(y)
-    def inviami():
+    def inviami(self):
         a=len(str(self.x)+str(self.y))+2
         arduino.write(a)
         arduino.write(str.encode(","))
         arduino.write(self.x)
         arduino.write(str.encode(";"))
         arduino.write(self.y)
-    def getX():
+        print(self.x)
+        print(self.y)
+    def getX(self):
         return self.x
-    def getY():
+    def getY(self):
         return self.y
 
         
 def inviaQuadrato(val):
     for i in range(4):
         #if i%3==0: x=val.getX()/4 else x=val.getX()*3/4
-        x=val.getX()/4 if i%3==0 else val.getX()*3/4
-        y=val.getY()/4 if i/2==0 else val.getY()*3/4
+        if i%3==0:
+            x=(val.getX())/4
+        else:
+            x=(val.getX())*3/4
+            
+        if i<2:
+            y=(val.getY())/4
+        else:
+            y=(val.getY())*3/4
+        #x=val.getX()/4 if i%3==0 else val.getX()*3/4
+        #y=val.getY()/4 if i/2==0 else val.getY()*3/4
         coor=Coordinata(x,y)
         coor.inviami()
     
@@ -37,7 +48,8 @@ def cercaPorta():
 def wait_readOne():
     while arduino.in_waiting<=0:
         time.sleep(0.0001)
-    return arduino.read(1)
+    return arduino.read(1).decode("utf-8") 
+
 
 def leggiCoordinata():
     print("attendo numero cifre")
@@ -51,17 +63,24 @@ def leggiCoordinata():
         last_char = strCifre[-1]
         
     strCifre=strCifre.split(",")
-    cifre=strCifre[0]
+    cifre=int(strCifre[0])
     
     print(f"attendo {cifre} byte")
     #coordinateCalibrazione= Coordinate(x,y)
-    while arduino.in_waiting<cifre:
+    while arduino.in_waiting < cifre:
         time.sleep(0.0001)
         
     strLetta=arduino.read(cifre);
-    val=stringaLetta.split(";")
     
-    return Coordinata(val[0],val[1])
+    #strLetta.decode("utf-8")
+    strLetta=str(strLetta, "utf-8")
+    print(strLetta)
+    if strLetta[-1] =="i":
+        strLetta=strLetta.rstrip(strLetta[-1])
+    print(strLetta)
+    val=strLetta.split(";")
+    
+    return Coordinata(int(val[0]),int(val[1]))
  
 def start_stop():
     print("attendo una 's'")
